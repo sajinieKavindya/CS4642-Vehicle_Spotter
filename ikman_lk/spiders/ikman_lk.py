@@ -20,9 +20,13 @@ class IkmanIk(scrapy.Spider):
 
     def parse_individual(self, response):
 
-
         def extract_with_css(item, query):
-            return item.css(query).extract_first()
+            elem = item.css(query).extract_first()
+
+            if elem is not None:
+                return elem.strip()
+            else:
+                return elem
 
         def parse_item_properties(item):
             keys = item.css('div.item-properties dl dt::text').extract()
@@ -59,4 +63,5 @@ class IkmanIk(scrapy.Spider):
                 'Date': extract_with_css(item, 'div.item-top p.item-intro span.date::text'),
                 'Location': extract_with_css(item, 'div.item-top p.item-intro span.location::text')
             }
+
 
